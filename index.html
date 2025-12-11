@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI Master Exam (110 Qs)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --bg: #0f172a;
+            --bg-light: #1e293b;
+            --card-bg: #1e293b;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+            animation: gradientShift 15s ease infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 768px) {
+            .app-container {
+                padding: 20px;
+            }
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 24px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        h1 { 
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        
+        .gh-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gh-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .badge { 
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        /* MAIN CONTENT */
+        .quiz-body {
+            padding: 0 24px 24px;
+            flex: 1;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease;
+        }
+
+        .q-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 32px;
+            line-height: 1.6;
+            color: var(--text);
+            letter-spacing: -0.3px;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: 1fr;
+        }
+        
+        @media (min-width: 600px) {
+            .options-grid { 
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        button.option {
+            background: var(--bg-light);
+            border: 2px solid var(--border);
+            padding: 20px;
+            border-radius: 16px;
+            text-align: left;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text);
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button.option:hover:not(:disabled) {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+        }
+
+        button.option.correct {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.2));
+            border-color: var(--success);
+            color: #6ee7b7;
+        }
+
+        button.option.wrong {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(248, 113, 113, 0.2));
+            border-color: #ef4444;
+            color: #fca5a5;
+        }
+
+        /* FEEDBACK */
+        .feedback {
+            display: none;
+            margin-top: 24px;
+            padding: 24px;
+            background: var(--card-bg);
+            border-left: 5px solid var(--primary);
+            border-radius: 16px;
+            animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+        }
+
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        .feedback strong {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .source-tag {
+            display: block;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--accent);
+            font-weight: 600;
+            font-style: italic;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* FOOTER */
+        .nav-footer {
+            padding: 20px 24px;
+            background: var(--card-bg);
+            display: none;
+            justify-content: flex-end;
+            position: sticky;
+            bottom: 0;
+            border-top: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            margin-top: auto;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* RESULTS */
+        .results-view {
+            display: none;
+            text-align: center;
+            padding: 60px 24px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .big-score { 
+            font-size: 5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--success), #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 24px 0;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header id="appHeader">
+        <div class="header-flex">
+             <div>
+                <h1>AI Master Exam: Agents & Search </h1>
+                <p class="subtitle">Artificiell Intelligens (50%, omg 1) - HT25 (Samir Ahmad)</p>
+                
+                <a href="https://github.com/SamirAh90" target="_blank" class="gh-link">
+                    <svg height="16" width="16" viewBox="0 0 16 16" fill="white"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                    GitHub @SamirAh90 | ⭐ Star Repository & Follow for More! 
+                </a>
+            </div>
+
+            <div class="badge">Q: <span id="qNum">1</span>/110</div>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </header>
+
+    <div class="quiz-body" id="quizBody">
+        <div class="question-card">
+            <div class="q-text" id="questionText">Loading...</div>
+            <div class="options-grid" id="optionsGrid"></div>
+        </div>
+
+        <div class="feedback" id="feedbackArea">
+            <strong id="feedbackTitle"></strong>
+            <span id="feedbackReason"></span>
+            <span class="source-tag" id="feedbackSource"></span>
+        </div>
+    </div>
+
+    <div class="nav-footer" id="navFooter">
+        <button class="next-btn" onclick="nextQ()">Next Question ➜</button>
+    </div>
+
+    <div class="results-view" id="resultsView">
+        <h2>Exam Completed!</h2>
+        <p>Final Score:</p>
+        <div class="big-score" id="finalScoreDisplay">0</div>
+        <p id="finalMsg"></p>
+        <button class="restart-btn" onclick="location.reload()">Restart Exam</button>
+    </div>
+</div>
+
+<script>
+    const db = [
+        // ============================================================
+        // PART 1: FROM CONVERSATION (General Concepts)
+        // ============================================================
+        {
+            q: "What is the fundamental definition of an 'Agent'?",
+            opts: ["Anything that perceives its environment through sensors and acts via actuators", "A robot with artificial intelligence", "A software program that runs on a server", "A system that passes the Turing test"],
+            a: 0,
+            exp: "An agent is defined by the Sensor -> Actuator loop.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "In the PEAS framework, what does the 'P' stand for?",
+            opts: ["Perception", "Planning", "Performance Measure", "Program"],
+            a: 2,
+            exp: "Performance Measure defines the criterion for success.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "A Rational Agent is defined as one that:",
+            opts: ["Knows everything about the future", "Maximizes the expected value of its performance measure", "Never makes a mistake", "Maximizes its speed"],
+            a: 1,
+            exp: "Rationality is about maximizing *expected* success given available info, not omniscience.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Which of the following is NOT one of the 4 factors determining rationality?",
+            opts: ["The performance measure", "The agent's prior knowledge", "The agent's percept sequence", "The programming language used"],
+            a: 3,
+            exp: "Rationality depends on P.E.A.S and knowledge, not the code syntax.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Is Rationality the same as Omniscience?",
+            opts: ["Yes, always", "No, rationality is limited by perception and knowledge", "Yes, for simple agents", "No, rationality means acting randomly"],
+            a: 1,
+            exp: "Omniscience implies knowing the actual outcome; Rationality implies making the best bet.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "For an Automated Taxi, which represents the 'Environment' in PEAS?",
+            opts: ["Safe, fast, legal trip", "Steering, brake, gas", "Roads, traffic, pedestrians, weather", "Cameras, Sonar, GPS"],
+            a: 2,
+            exp: "The Environment is the external world the agent operates in.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "For a Medical Diagnosis System, 'Healthy patient' is the:",
+            opts: ["Sensor", "Actuator", "Performance Measure", "Environment"],
+            a: 2,
+            exp: "This is the goal or metric of success.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Which agent type selects actions based ONLY on the current percept?",
+            opts: ["Model-Based Reflex Agent", "Simple Reflex Agent", "Goal-Based Agent", "Utility-Based Agent"],
+            a: 1,
+            exp: "Simple reflex agents ignore history and just react to 'now'.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "What component does a Model-Based Reflex Agent add to handle partial observability?",
+            opts: ["A Goal", "An Internal State (Memory)", "A Utility Function", "A Learning Element"],
+            a: 1,
+            exp: "The internal state tracks parts of the world that are not currently visible.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "A Goal-Based Agent differs from a Reflex agent because it:",
+            opts: ["Considers the future consequences of actions (Planning)", "Reacts faster", "Uses less memory", "Has no sensors"],
+            a: 0,
+            exp: "It asks 'What will happen if I do this?' to reach a destination.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Which agent type uses a function to score how 'happy' or efficient a state is?",
+            opts: ["Simple Reflex Agent", "Model-Based Agent", "Goal-Based Agent", "Utility-Based Agent"],
+            a: 3,
+            exp: "Utility functions allow trading off conflicting goals (e.g., speed vs safety).",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "In a Learning Agent, what is the role of the 'Critic'?",
+            opts: ["To perform actions", "To evaluate how well the agent is doing", "To suggest new experiments", "To store the memory"],
+            a: 1,
+            exp: "The Critic provides feedback on performance to the Learning Element.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "If an environment is 'Fully Observable', it means:",
+            opts: ["The agent can see the entire relevant state at all times", "The environment never changes", "The agent is the only one moving", "The outcome is random"],
+            a: 0,
+            exp: "Chess is fully observable; Poker (hidden cards) is partially observable.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Chess is an example of what kind of environment?",
+            opts: ["Stochastic", "Deterministic", "Episodic", "Unknown"],
+            a: 1,
+            exp: "If you move a piece, the outcome is certain (rules are fixed).",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Driving a taxi is 'Stochastic' because:",
+            opts: ["The outcome of actions is uncertain (traffic, ice)", "The driver knows the destination", "The car uses gas", "It is a single agent system"],
+            a: 0,
+            exp: "Stochastic means the next state is not fully determined by the action (randomness involved).",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "In an 'Episodic' environment (like analyzing parts on an assembly line):",
+            opts: ["Current decisions affect all future decisions", "The agent needs to plan ahead", "Each decision is independent of the previous one", "The agent plays against an opponent"],
+            a: 2,
+            exp: "The agent can forget the previous episode; no long-term planning is needed.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Chess is 'Sequential' because:",
+            opts: ["Moves are independent", "Current moves affect future board states", "It uses dice", "You can't see the opponent"],
+            a: 1,
+            exp: "A bad move now can cause a loss 20 moves later.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "What defines a 'Multi-Agent' environment?",
+            opts: ["The agent has multiple sensors", "The agent has multiple actuators", "Other agents' actions affect the performance (e.g., Traffic, Chess)", "The agent runs on multiple CPUs"],
+            a: 2,
+            exp: "You are not alone; you must anticipate others.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "What is the difference between 'Known' and 'Observable'?",
+            opts: ["They are the same", "Known refers to rules/physics; Observable refers to seeing the state", "Known refers to sensors; Observable refers to actuators", "Observable means you know the rules"],
+            a: 1,
+            exp: "You can see the cards (Observable) but not know the rules of the game (Unknown).",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "A 'Software Agent' (Softbot) has sensors like:",
+            opts: ["Cameras and Motors", "Keystrokes, File contents, Network packets", "Steering wheel", "Thermostat"],
+            a: 1,
+            exp: "Software agents 'sense' digital data.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "What is the correct order of the problem-solving phases?",
+            opts: ["Search -> Goal Formulation -> Execution", "Goal Formulation -> Problem Formulation -> Search -> Execution", "Execution -> Search -> Goal", "Problem Formulation -> Execution -> Search"],
+            a: 1,
+            exp: "First decide WHERE to go, then define HOW, then PLAN, then ACT.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "What happens during the 'Search' phase?",
+            opts: ["The agent moves physically", "The agent simulates sequences of actions in its head", "The agent defines the goal", "The agent builds a physical map"],
+            a: 1,
+            exp: "Search is a mental simulation to find a plan.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "An 'Open Loop' system executes a plan...",
+            opts: ["While checking sensors constantly", "Blindly, ignoring percepts during execution", "Only in stochastic environments", "Slower than Closed Loop"],
+            a: 1,
+            exp: "It assumes the world won't change, so it doesn't check.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "A 'Closed Loop' system is necessary when:",
+            opts: ["The environment is Deterministic", "The environment is Nondeterministic/Dynamic", "The agent has no sensors", "Speed is the only goal"],
+            a: 1,
+            exp: "If the road might close unexpectedly, you must monitor feedback.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "What is an 'Atomic' state representation?",
+            opts: ["State is a black box with no internal structure (e.g., City 'A')", "State has variables (Gas, Money)", "State has objects and relationships", "State is radioactive"],
+            a: 0,
+            exp: "Used in search algorithms; the agent doesn't care about what's inside the state.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "What is a 'Factored' state representation?",
+            opts: ["Black box states", "States defined by variables and values (e.g., Gas=Full)", "Complex logic relationships", "Only using 0s and 1s"],
+            a: 1,
+            exp: "Used in constraint satisfaction; breaks state into attributes.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "The 'Frontier' (or Open List) in search algorithms is:",
+            opts: ["The goal state", "The starting state", "The set of unexplored nodes available for expansion", "The path already traveled"],
+            a: 2,
+            exp: "It is the border between the explored and unexplored world.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "BFS (Breadth-First Search) uses which data structure?",
+            opts: ["Stack (LIFO)", "Queue (FIFO)", "Priority Queue", "Array"],
+            a: 1,
+            exp: "First-In, First-Out ensures we check layer 1 before layer 2.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "DFS (Depth-First Search) uses which data structure?",
+            opts: ["Queue (FIFO)", "Stack (LIFO)", "Priority Queue", "Tree"],
+            a: 1,
+            exp: "Last-In, First-Out allows diving deep into the newest node.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Which algorithm is guaranteed to find the shortest path (optimal) in an unweighted graph?",
+            opts: ["DFS", "BFS", "Greedy Search", "Random Walk"],
+            a: 1,
+            exp: "BFS checks the shallowest nodes first.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "What is the main disadvantage of BFS?",
+            opts: ["It is not complete", "It uses a huge amount of memory", "It gets stuck in loops", "It cannot find the goal"],
+            a: 1,
+            exp: "It must store the entire frontier level in memory.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Dijkstra's Algorithm (Uniform Cost Search) uses a:",
+            opts: ["Stack", "Queue", "Priority Queue (sorted by cost)", "Random list"],
+            a: 2,
+            exp: "It always expands the cheapest node (lowest g) first.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Dijkstra's Algorithm is best for:",
+            opts: ["Unweighted graphs", "Weighted graphs (finding cheapest path)", "Mazes with no costs", "Maximizing heuristics"],
+            a: 1,
+            exp: "It handles varying road lengths/costs correctly.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "The A* (A-Star) algorithm minimizes which function?",
+            opts: ["f(n) = g(n)", "f(n) = h(n)", "f(n) = g(n) + h(n)", "f(n) = g(n) * h(n)"],
+            a: 2,
+            exp: "Cost so far (g) + Estimated cost to go (h).",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "In A*, what is g(n)?",
+            opts: ["The estimated cost to the goal", "The actual cost from the start node to n", "The total estimated path cost", "The straight line distance"],
+            a: 1,
+            exp: "This is the 'past' cost.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "In A*, what is h(n)?",
+            opts: ["The heuristic estimate from n to the goal", "The exact cost to the goal", "The cost so far", "The number of nodes visited"],
+            a: 0,
+            exp: "This is the 'future' guess (e.g., straight line distance).",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "For A* to be optimal, the heuristic must be 'Admissible'. This means:",
+            opts: ["It must never overestimate the cost", "It must be zero", "It must be complex", "It must overestimate the cost"],
+            a: 0,
+            exp: "If h(n) is pessimistic (too high), A* might miss the best path.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Greedy Best-First Search minimizes:",
+            opts: ["g(n)", "h(n)", "g(n) + h(n)", "g(n) - h(n)"],
+            a: 1,
+            exp: "It only cares about getting closer to the goal, ignoring path cost.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Which search algorithm combines the safety of Dijkstra with the speed of Greedy?",
+            opts: ["BFS", "DFS", "A*", "Recursive Best-First"],
+            a: 2,
+            exp: "A* balances current cost and future promise.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "What is a 'Grid World' used for in AI?",
+            opts: ["Playing Chess", "A standardized simplified environment for testing search algorithms", "Simulating weather", "Testing Turing machines"],
+            a: 1,
+            exp: "It abstracts navigation into discrete cells.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "If your heuristic h(n) is exactly 0 for all nodes, A* becomes:",
+            opts: ["DFS", "BFS", "Dijkstra (Uniform Cost Search)", "Greedy Search"],
+            a: 2,
+            exp: "f(n) = g(n) + 0 is just minimizing cost, which is Dijkstra.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "What is 'Tree-Based Search'?",
+            opts: ["Moving randomly", "Expanding nodes to form a tree of possibilities in memory", "Climbing a physical tree", "Using decision trees for classification"],
+            a: 1,
+            exp: "The agent simulates different futures as branches.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "In a 'Structured' state representation, the agent understands:",
+            opts: ["Objects and relationships (e.g., Truck is in front of Car)", "Variables only", "Nothing", "Pixels"],
+            a: 0,
+            exp: "This allows for high-level reasoning.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "What is the main advantage of DFS over BFS?",
+            opts: ["It is optimal", "It is complete", "It uses much less memory", "It finds the shortest path"],
+            a: 2,
+            exp: "DFS only stores the single path it is currently exploring.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Which of these is a 'Performance Measure' for a Vacuum World agent?",
+            opts: ["Clean squares per minute", "The vacuum motor", "The dirt sensor", "The room layout"],
+            a: 0,
+            exp: "It scores the agent's behavior.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Can a simple reflex agent be rational?",
+            opts: ["No, never", "Yes, if the environment is fully observable and the correct action depends only on the current state", "Only if it has a goal", "Only if it uses A*"],
+            a: 1,
+            exp: "Rationality depends on the task. If memory isn't needed, reflex is rational.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "What is 'Exploration' in the context of Learning Agents?",
+            opts: ["Doing actions to get more data/knowledge", "Moving towards the goal", "Calculating heuristics", "Stopping the agent"],
+            a: 0,
+            exp: "Sometimes you must try the unknown to learn.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "Which algorithm would you use for a maze if you have limited memory?",
+            opts: ["BFS", "DFS", "A*", "Dijkstra"],
+            a: 1,
+            exp: "DFS is memory-efficient (linear space complexity).",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "In the 'Champs Elysées' example, was crossing the street rational even if a plane door fell?",
+            opts: ["Yes", "No"],
+            a: 0,
+            exp: "Rationality is based on available info. You cannot predict falling plane parts.",
+            src: "Source: Conversation with Gemini"
+        },
+        {
+            q: "A Calculator is an example of a _____ environment.",
+            opts: ["Stochastic", "Deterministic", "Multi-agent", "Unknown"],
+            a: 1,
+            exp: "Input 2+2 always equals 4.",
+            src: "Source: Conversation with Gemini"
+        },
+
+        // ============================================================
+        // PART 2: FROM SLIDES (Specific Examples)
+        // ============================================================
+        {
+            q: "According to the slides, what are the 'sensors' for a software agent?",
+            opts: ["Cameras and Motors", "Keystrokes, file contents, network packets", "GPS and Sonar", "Microphones"],
+            a: 1,
+            exp: "Slide 2 lists keystrokes, file contents, and network packets as sensory inputs.",
+            src: "Source: Slide (Agents & Environment)"
+        },
+        {
+            q: "Which of the following is listed as a performance measure for a Calculator in the slides?",
+            opts: ["Battery Life", "Profit", "Distance traveled", "Number of users"],
+            a: 0,
+            exp: "Slide 6 lists Battery Life, Accuracy, Speed, and Reliability.",
+            src: "Source: Slide (Calculator)"
+        },
+        {
+            q: "In the Champs Elysées example (Slide 7), why was crossing the street considered rational?",
+            opts: ["Because the agent was omniscient", "Because rationality maximizes expected success with available info, ignoring the falling door", "Because the door missed the agent", "Because the agent looked up"],
+            a: 1,
+            exp: "Rationality is not omniscience; the agent could not have known about the door.",
+            src: "Source: Slide (Omniscience)"
+        },
+        {
+            q: "According to Slide 8, what does 'Autonomy' mean?",
+            opts: ["The agent operates without electricity", "Independence from initial knowledge/creator", "The ability to move", "The ability to speak"],
+            a: 1,
+            exp: "Autonomy is the extent to which behavior is determined by the agent's own experience.",
+            src: "Source: Slide (Learning and Autonomy)"
+        },
+        {
+            q: "According to Slide 10, a Crossword Puzzle is an example of which property?",
+            opts: ["Multi-agent", "Single agent", "Cooperative", "Competitive"],
+            a: 1,
+            exp: "The crossword puzzle does not fight back; it is a Single Agent system.",
+            src: "Source: Slide (Task Environment)"
+        },
+        {
+            q: "According to Slide 10, Taxi driving involves which type of agent interaction?",
+            opts: ["Cooperative", "Single Agent", "Turn-based", "Episodic"],
+            a: 0,
+            exp: "Drivers cooperatively avoid crashes to maintain traffic flow.",
+            src: "Source: Slide (Task Environment)"
+        },
+        {
+            q: "Why is the Vacuum World considered 'Deterministic' (Slide 11)?",
+            opts: ["The outcome of each action is predictable and certain", "Dirt appears randomly", "The robot moves randomly", "It is hard to predict"],
+            a: 0,
+            exp: "If the robot sucks, the dirt is gone. There is no uncertainty.",
+            src: "Source: Slide (Task Environment Properties)"
+        },
+        {
+            q: "According to Slide 11, 'Spotting defective parts on an assembly line' is:",
+            opts: ["Sequential", "Episodic", "Continuous", "Multi-agent"],
+            a: 1,
+            exp: "Each part is independent; the decision on part A has no consequence for part B.",
+            src: "Source: Slide (Task Environment Properties)"
+        },
+        {
+            q: "According to Slide 12, the environment rules for Poker are considered:",
+            opts: ["Known", "Unknown", "Fully Observable", "Static"],
+            a: 1,
+            exp: "Because of partial observability (hidden cards), the specific state is Unknown.",
+            src: "Source: Slide (Agent's State of Knowledge)"
+        },
+        {
+            q: "What is the formula for an Agent given on Slide 13?",
+            opts: ["Agent = Sensor + Actuator", "Agent = Architecture + Program", "Agent = Brain + Body", "Agent = Input + Output"],
+            a: 1,
+            exp: "The agent is the combination of the physical hardware (architecture) and the logic (program).",
+            src: "Source: Slide (Structure of Agent)"
+        },
+        {
+            q: "According to Slide 13, what replaced the 'huge tables of square roots' used by engineers?",
+            opts: ["A five-line program (Newton's method)", "A larger table", "A slide rule", "A cloud server"],
+            a: 0,
+            exp: "This illustrates replacing vast tables (memory) with small programs (intelligence).",
+            src: "Source: Slide (Structure of Agent)"
+        },
+        {
+            q: "Which specific example is used to illustrate a Model-Based Reflex Agent on Slide 16?",
+            opts: ["Vacuum Cleaner", "Smart Thermostat", "Chess Player", "Spam Filter"],
+            a: 1,
+            exp: "The Smart Thermostat uses internal state to know if people are home.",
+            src: "Source: Slide (Model Based Reflex Agents)"
+        },
+        {
+            q: "According to Slide 18, which agent type is needed when there are conflicting goals (e.g., Speed vs Safety)?",
+            opts: ["Goal-based", "Utility-based", "Reflex", "Model-based"],
+            a: 1,
+            exp: "Utility functions specify the appropriate tradeoff between conflicting goals.",
+            src: "Source: Slide (Utility Based Agents)"
+        },
+        {
+            q: "According to Slide 18, an 'Investment Bot' balancing risk and profit is an example of:",
+            opts: ["Simple Reflex Agent", "Utility-Based Agent", "Goal-Based Agent", "Vacuum Agent"],
+            a: 1,
+            exp: "It weighs likelihood of success (profit) against importance (risk), which requires Utility.",
+            src: "Source: Slide (Utility Based Agents)"
+        },
+        {
+            q: "On Slide 19, 'Driving: gas in tank, GPS coordinates, money for tolls' is an example of which representation?",
+            opts: ["Atomic", "Factored", "Structured", "Pixels"],
+            a: 1,
+            exp: "Factored representation splits the state into variables and values.",
+            src: "Source: Slide (State Representation)"
+        },
+        {
+            q: "According to Slide 19, which state representation relies on 'relationships and logic'?",
+            opts: ["Atomic", "Structured", "Factored", "Numeric"],
+            a: 1,
+            exp: "Structured representation uses objects and relations for complex reasoning.",
+            src: "Source: Slide (State Representation)"
+        },
+        {
+            q: "According to Slide 21, which phase comes immediately after 'Goal Formulation'?",
+            opts: ["Search", "Execution", "Problem Formulation", "Evaluation"],
+            a: 2,
+            exp: "Once the Goal is set, you must formulate the Problem (states/actions) before Searching.",
+            src: "Source: Slide (Problem Solving)"
+        },
+        {
+            q: "According to Slide 22, an 'Open Loop' strategy assumes:",
+            opts: ["There are problems (road closed)", "The execution will happen without any problems", "Sensors must be checked", "The environment is stochastic"],
+            a: 1,
+            exp: "Open Loop blindly executes the plan assuming the world is static and perfect.",
+            src: "Source: Slide (Road Map)"
+        },
+        {
+            q: "How is a 'Grid World' defined on Slide 23?",
+            opts: ["A 3D space", "A two-dimensional rectangular array of square cells", "A hexagonal map", "A continuous line"],
+            a: 1,
+            exp: "Standardized problem environment consisting of square cells.",
+            src: "Source: Slide (Example Problems)"
+        },
+        {
+            q: "According to Slide 26, DFS is a recursive algorithm that uses the idea of:",
+            opts: ["Queueing", "Backtracking", "Broadcasting", "Heuristics"],
+            a: 1,
+            exp: "When DFS hits a dead end, it backtracks to the last choice point.",
+            src: "Source: Slide (Depth First Search)"
+        },
+
+        // ============================================================
+        // PART 3: FROM BOOK (Chapters 2 & 3, Pages 81-159)
+        // ============================================================
+        {
+            q: "According to Chapter 2, if an agent's behavior depends ONLY on its built-in knowledge and not on its percepts, it lacks:",
+            opts: ["Rationality", "Autonomy", "Intelligence", "Sensors"],
+            a: 1,
+            exp: "A system that does not learn from experience and relies solely on prior knowledge lacks autonomy.",
+            src: "Source: Book (Chapter 2, Autonomy)"
+        },
+        {
+            q: "In the context of Environment Properties, a 'Dynamic' environment is one where:",
+            opts: ["The environment changes while the agent is deliberating", "The environment stays the same", "The agent controls everything", "Time is not a factor"],
+            a: 0,
+            exp: "If the world changes while the agent thinks, it is dynamic. If it waits for the agent, it is static.",
+            src: "Source: Book (Chapter 2, Nature of Environments)"
+        },
+        {
+            q: "Is the game of 'Poker' considered Static or Dynamic?",
+            opts: ["Dynamic", "Static", "Semidynamic", "None"],
+            a: 1,
+            exp: "Poker is static because the cards/board do not change while you are thinking about your move.",
+            src: "Source: Book (Chapter 2, Nature of Environments)"
+        },
+        {
+            q: "If an environment has a finite number of distinct states (like Chess), it is called:",
+            opts: ["Continuous", "Discrete", "Infinite", "Analog"],
+            a: 1,
+            exp: "Chess has a discrete set of states; driving a taxi involves continuous variables (speed, time).",
+            src: "Source: Book (Chapter 2, Nature of Environments)"
+        },
+        {
+            q: "What is the 'Table-Driven Agent's' major flaw according to the book?",
+            opts: ["It is too fast", "It requires too much memory to store every possible percept sequence", "It cannot calculate", "It has no sensors"],
+            a: 1,
+            exp: "A table for chess would require more entries than atoms in the universe.",
+            src: "Source: Book (Chapter 2, Agent Structure)"
+        },
+        {
+            q: "In a Simple Reflex Agent, the condition-action rule is a function mapping:",
+            opts: ["Percept to Action", "State to Action", "Goal to Action", "Utility to Action"],
+            a: 0,
+            exp: "It maps the current percept directly to an action.",
+            src: "Source: Book (Chapter 2, Simple Reflex)"
+        },
+        {
+            q: "What does the 'Problem Generator' do in a Learning Agent?",
+            opts: ["It solves the problem", "It suggests actions that lead to new and informative experiences", "It generates errors", "It stops the agent"],
+            a: 1,
+            exp: "It encourages exploration by suggesting suboptimal actions to discover new things.",
+            src: "Source: Book (Chapter 2, Learning Agents)"
+        },
+        {
+            q: "Which problem type requires the agent to assume the world does not change while it plans?",
+            opts: ["Single-state problem", "Sensorless problem", "Contingency problem", "Exploration problem"],
+            a: 0,
+            exp: "Standard search assumes the environment is static and deterministic.",
+            src: "Source: Book (Chapter 3, Problem Solving Agents)"
+        },
+        {
+            q: "In problem formulation, the 'Path Cost' is:",
+            opts: ["The number of steps", "The sum of the costs of the individual actions along the path", "The distance to the goal", "The memory used"],
+            a: 1,
+            exp: "It is the additive cost of the sequence (e.g., total km traveled).",
+            src: "Source: Book (Chapter 3, Problem Formulation)"
+        },
+        {
+            q: "A search algorithm is 'Complete' if:",
+            opts: ["It finds the shortest path", "It always finds a solution if one exists", "It uses minimal memory", "It is fast"],
+            a: 1,
+            exp: "Completeness guarantees a solution will be found if it is reachable.",
+            src: "Source: Book (Chapter 3, Search Algorithms)"
+        },
+        {
+            q: "What is the Time Complexity of Breadth-First Search (BFS)?",
+            opts: ["O(d)", "O(b^d)", "O(1)", "O(n^2)"],
+            a: 1,
+            exp: "It grows exponentially with branching factor 'b' and depth 'd'.",
+            src: "Source: Book (Chapter 3, Uninformed Search)"
+        },
+        {
+            q: "Which algorithm expands the node with the lowest path cost g(n)?",
+            opts: ["BFS", "DFS", "Uniform-Cost Search", "Depth-Limited Search"],
+            a: 2,
+            exp: "Uniform-Cost Search generalizes BFS to handle weighted graphs optimally.",
+            src: "Source: Book (Chapter 3, Uninformed Search)"
+        },
+        {
+            q: "Depth-Limited Search fixes the infinite loop problem of DFS by:",
+            opts: ["Using a queue", "Imposing a depth limit 'l' on the path", "Checking heuristics", "Randomizing steps"],
+            a: 1,
+            exp: "It treats nodes at depth l as having no successors.",
+            src: "Source: Book (Chapter 3, Uninformed Search)"
+        },
+        {
+            q: "Iterative Deepening Search (IDS) combines the benefits of:",
+            opts: ["BFS (Optimality/Completeness) and DFS (Memory efficiency)", "A* and Greedy", "BFS and Dijkstra", "Hill Climbing and Genetic Algo"],
+            a: 0,
+            exp: "It has the modest memory requirements of DFS but is complete like BFS.",
+            src: "Source: Book (Chapter 3, Uninformed Search)"
+        },
+        {
+            q: "Bidirectional Search works by:",
+            opts: ["Searching from the start forward and the goal backward simultaneously", "Searching twice", "Searching in 2D", "Searching with two agents"],
+            a: 0,
+            exp: "It hopes the two searches meet in the middle, reducing complexity.",
+            src: "Source: Book (Chapter 3, Uninformed Search)"
+        },
+        {
+            q: "A Heuristic h(n) is 'Consistent' (or Monotonic) if:",
+            opts: ["It never overestimates the cost", "The estimated cost of reaching the goal from n is no greater than the step cost to n' plus estimated cost from n'", "It is always zero", "It equals the true cost"],
+            a: 1,
+            exp: "This is a stronger condition than admissibility, ensuring the f-value never decreases along a path.",
+            src: "Source: Book (Chapter 3, Informed Search)"
+        },
+        {
+            q: "If h1(n) < h2(n) < C* (true cost) for all n, which heuristic is better?",
+            opts: ["h1", "h2", "Both are equal", "Neither"],
+            a: 1,
+            exp: "h2 'dominates' h1 because it is closer to the true cost while still being admissible, expanding fewer nodes.",
+            src: "Source: Book (Chapter 3, Heuristics)"
+        },
+        {
+            q: "Relaxing a problem (e.g., removing walls in a maze) is a way to:",
+            opts: ["Cheat", "Invent an admissible heuristic", "Make the problem harder", "Increase complexity"],
+            a: 1,
+            exp: "The cost of an optimal solution to a relaxed problem is an admissible heuristic for the original problem.",
+            src: "Source: Book (Chapter 3, Heuristics)"
+        },
+        {
+            q: "Recursive Best-First Search (RBFS) mimics standard Best-First Search but:",
+            opts: ["Uses linear space (memory)", "Uses a queue", "Is slower", "Is not optimal"],
+            a: 0,
+            exp: "It is a memory-efficient version of A*.",
+            src: "Source: Book (Chapter 3, Informed Search)"
+        },
+        {
+            q: "In the 8-puzzle, which is a common heuristic?",
+            opts: ["Manhattan Distance", "Euclidean Distance", "Product of tiles", "Number of moves"],
+            a: 0,
+            exp: "Sum of distances of tiles from their goal positions (Manhattan) is a standard admissible heuristic.",
+            src: "Source: Book (Chapter 3, Heuristics)"
+        },
+        {
+            q: "The 'Branching Factor' (b) refers to:",
+            opts: ["The number of branches in a tree", "The maximum number of successors of any node", "The depth of the tree", "The cost of the path"],
+            a: 1,
+            exp: "It determines how wide the search tree grows.",
+            src: "Source: Book (Chapter 3, Problem Solving)"
+        },
+        {
+            q: "What is the 'State Space'?",
+            opts: ["The physical room", "The set of all possible states reachable from the initial state", "The memory used", "The map"],
+            a: 1,
+            exp: "It is the graph of all possible configurations of the environment.",
+            src: "Source: Book (Chapter 3, Problem Formulation)"
+        },
+        {
+            q: "A 'Goal Test' can be explicit (a specific state) or:",
+            opts: ["Implicit (a property that applies to the state)", "Random", "Hidden", "Undefined"],
+            a: 0,
+            exp: "E.g., In chess, the goal is 'Checkmate', which is a property, not a single board configuration.",
+            src: "Source: Book (Chapter 3, Problem Formulation)"
+        },
+        {
+            q: "The 'Vacuum World' with 2 squares has how many possible states?",
+            opts: ["2", "4", "8", "16"],
+            a: 2,
+            exp: "2 locations x 2 possibilities (clean/dirty) x 2 agent positions = 8 states.",
+            src: "Source: Book (Chapter 3, Example Problems)"
+        },
+        {
+            q: "A heuristic h(n) = 0 essentially turns A* search into:",
+            opts: ["Uniform-Cost Search", "DFS", "Greedy Search", "Random Search"],
+            a: 0,
+            exp: "If h(n)=0, then f(n) = g(n), which is exactly Uniform-Cost Search.",
+            src: "Source: Book (Chapter 3, A* Search)"
+        },
+        {
+            q: "If an algorithm always finds a solution but not necessarily the best one, it is:",
+            opts: ["Optimal", "Complete", "Incomplete", "Recursive"],
+            a: 1,
+            exp: "Complete means it finds *a* solution; Optimal means it finds the *best* one.",
+            src: "Source: Book (Chapter 3, Search Properties)"
+        },
+        {
+            q: "What is 'Repeated State' handling?",
+            opts: ["Doing the same action twice", "Checking if a state has been visited before to avoid loops", "Restarting the search", "Using recursion"],
+            a: 1,
+            exp: "Failure to detect repeated states can turn a linear problem into an exponential one.",
+            src: "Source: Book (Chapter 3, Graph Search)"
+        },
+        {
+            q: "Which search strategy is LIFO (Last-In, First-Out)?",
+            opts: ["BFS", "DFS", "Uniform-Cost", "Bidirectional"],
+            a: 1,
+            exp: "DFS uses a Stack (LIFO).",
+            src: "Source: Book (Chapter 3, Uninformed Search)"
+        },
+        {
+            q: "Which search strategy is FIFO (First-In, First-Out)?",
+            opts: ["BFS", "DFS", "A*", "IDS"],
+            a: 0,
+            exp: "BFS uses a Queue (FIFO).",
+            src: "Source: Book (Chapter 3, Uninformed Search)"
+        },
+        {
+            q: "The 'effective branching factor' (b*) is used to measure:",
+            opts: ["The quality of a heuristic", "The depth of the tree", "The memory usage", "The speed of light"],
+            a: 0,
+            exp: "A lower b* (closer to 1) means the heuristic is very effective at pruning the tree.",
+            src: "Source: Book (Chapter 3, Heuristics)"
+        },
+        {
+            q: "What is the 'Step Cost'?",
+            opts: ["The cost of taking a single action to move from state x to y", "The total cost", "The heuristic cost", "The CPU cost"],
+            a: 0,
+            exp: "Typically denoted as c(x, a, y).",
+            src: "Source: Book (Chapter 3, Problem Formulation)"
+        },
+        {
+            q: "In a 'Semi-dynamic' environment:",
+            opts: ["The environment does not change, but the agent's performance score decreases over time", "The environment changes slowly", "The agent is static", "Gravity changes"],
+            a: 0,
+            exp: "E.g., Chess with a clock. The board doesn't change, but time runs out.",
+            src: "Source: Book (Chapter 2, Environment Types)"
+        },
+        {
+            q: "A 'Utility Function' maps a state to:",
+            opts: ["A real number (representing happiness/value)", "An action", "A goal", "A probability"],
+            a: 0,
+            exp: "It quantifies the desirability of a state.",
+            src: "Source: Book (Chapter 2, Utility Agents)"
+        },
+        {
+            q: "What is the 'Missionaries and Cannibals' problem?",
+            opts: ["A classic river-crossing puzzle used to test search algorithms", "A video game", "A real-world crisis", "A sorting algorithm"],
+            a: 0,
+            exp: "A standard constraint problem in AI textbooks.",
+            src: "Source: Book (Chapter 3, Example Problems)"
+        },
+        {
+            q: "The 'Explored Set' (or Closed List) stores:",
+            opts: ["Nodes that have already been expanded", "Nodes in the frontier", "Goal nodes", "Dead ends"],
+            a: 0,
+            exp: "This prevents the algorithm from processing the same state twice.",
+            src: "Source: Book (Chapter 3, Graph Search)"
+        },
+        {
+            q: "If an admissible heuristic is used, Tree Search A* is optimal. For Graph Search A* to be optimal, the heuristic must be:",
+            opts: ["Consistent", "Admissible", "Zero", "Negative"],
+            a: 0,
+            exp: "Graph search discards new paths to repeated states, so consistency is required to ensure the first path found is optimal.",
+            src: "Source: Book (Chapter 3, A* Search)"
+        },
+        {
+            q: "Which algorithm performs a DFS to a specific depth limit, then increases the limit and restarts?",
+            opts: ["IDS (Iterative Deepening Search)", "BFS", "A*", "Bidirectional Search"],
+            a: 0,
+            exp: "It simulates BFS using DFS memory.",
+            src: "Source: Book (Chapter 3, Uninformed Search)"
+        },
+        {
+            q: "A 'Successor Function' returns:",
+            opts: ["A list of (action, new-state) pairs", "The goal", "The cost", "The previous state"],
+            a: 0,
+            exp: "It defines the transitions available from a given state.",
+            src: "Source: Book (Chapter 3, Problem Formulation)"
+        },
+        {
+            q: "Which type of agent cannot operate in an unknown environment initially?",
+            opts: ["Reflex agent (without learning)", "Learning agent", "Random agent", "Exploratory agent"],
+            a: 0,
+            exp: "Without a learning mechanism, it cannot adapt to unknown rules.",
+            src: "Source: Book (Chapter 2, Learning)"
+        },
+        {
+            q: "In the 8-Queens problem, a 'Incremental formulation' involves:",
+            opts: ["Placing queens one by one", "Starting with 8 queens and moving them", "Using a genetic algorithm", "Solving a 4-queen problem first"],
+            a: 0,
+            exp: "Start with 0 queens, add 1 per step.",
+            src: "Source: Book (Chapter 3, Example Problems)"
+        }
+    ];
+
+    // Logic
+    let currentIdx = 0;
+    let score = 0;
+    const ui = {
+        qNum: document.getElementById('qNum'),
+        progressFill: document.getElementById('progressFill'),
+        questionText: document.getElementById('questionText'),
+        optionsGrid: document.getElementById('optionsGrid'),
+        feedbackArea: document.getElementById('feedbackArea'),
+        feedbackTitle: document.querySelector('#feedbackArea strong'),
+        feedbackReason: document.getElementById('feedbackReason'),
+        feedbackSource: document.getElementById('feedbackSource'),
+        navFooter: document.getElementById('navFooter'),
+        quizBody: document.getElementById('quizBody'),
+        resultsView: document.getElementById('resultsView'),
+        finalScoreDisplay: document.getElementById('finalScoreDisplay'),
+        finalMsg: document.getElementById('finalMsg'),
+        appHeader: document.getElementById('appHeader')
+    };
+
+    function loadQ() {
+        const item = db[currentIdx];
+        ui.qNum.innerText = currentIdx + 1;
+        
+        const pct = ((currentIdx) / db.length) * 100;
+        ui.progressFill.style.width = `${pct}%`;
+
+        ui.questionText.innerText = item.q;
+        
+        // Shuffle options
+        let indices = [0, 1, 2, 3];
+        indices.sort(() => Math.random() - 0.5);
+
+        ui.optionsGrid.innerHTML = '';
+        
+        indices.forEach(idx => {
+            const btn = document.createElement('button');
+            btn.className = 'option';
+            btn.innerText = item.opts[idx];
+            // Check if shuffled index matches the original correct answer index
+            const isCorrect = (idx === item.a);
+            btn.onclick = () => handleAnswer(isCorrect, btn, item);
+            ui.optionsGrid.appendChild(btn);
+        });
+
+        ui.feedbackArea.style.display = 'none';
+        ui.navFooter.style.display = 'none';
+        window.scrollTo(0,0);
+    }
+
+    function handleAnswer(isCorrect, btnEl, item) {
+        const allBtns = document.querySelectorAll('.option');
+        
+        allBtns.forEach(b => b.disabled = true);
+
+        if (isCorrect) {
+            score++;
+            btnEl.classList.add('correct');
+            ui.feedbackTitle.innerText = "Correct!";
+            ui.feedbackTitle.style.color = "#10b981"; // Success green
+        } else {
+            btnEl.classList.add('wrong');
+            // Find and highlight the correct answer
+            allBtns.forEach(b => {
+                if(b.innerText === item.opts[item.a]) {
+                    b.classList.add('correct');
+                }
+            });
+            ui.feedbackTitle.innerText = "Incorrect";
+            ui.feedbackTitle.style.color = "#ef4444"; // Error red
+        }
+
+        ui.feedbackReason.innerText = item.exp;
+        ui.feedbackSource.innerText = item.src;
+        ui.feedbackArea.style.display = 'block';
+        ui.navFooter.style.display = 'flex';
+    }
+
+    function nextQ() {
+        currentIdx++;
+        if (currentIdx < db.length) {
+            loadQ();
+        } else {
+            finishExam();
+        }
+    }
+
+    function finishExam() {
+        ui.quizBody.style.display = 'none';
+        ui.navFooter.style.display = 'none';
+        ui.appHeader.style.display = 'none';
+        ui.resultsView.style.display = 'block';
+
+        ui.finalScoreDisplay.innerText = `${score} / ${db.length}`;
+        
+        const percent = (score / db.length) * 100;
+        let msg = "";
+        if(percent >= 90) msg = "Outstanding! You are an AI Master.";
+        else if(percent >= 70) msg = "Great job! You passed.";
+        else if(percent >= 50) msg = "Good start. Keep reviewing.";
+        else msg = "Keep studying Agent Types and Search Algorithms!";
+        
+        ui.finalMsg.innerText = msg;
+    }
+
+    
+    loadQ();
+</script>
+
+</body>
+</html>
